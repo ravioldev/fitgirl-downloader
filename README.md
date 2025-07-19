@@ -1,8 +1,8 @@
-# FitGirl Updater
+# FitGirl Downloader
 
 A self hosted web application to track and manage FitGirl game releases with automatic scrapping from 1337x.
 
-![FitGirl Updater](docs/fitgirl-downloader.webp)
+![FitGirl Downloader](docs/fitgirl-downloader.webp)
 
 ## Why?
 
