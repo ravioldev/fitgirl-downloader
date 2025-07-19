@@ -1,0 +1,13 @@
+database_path: fitgirl_releases.json
+debug_mode: true
+last_sync_check: '2025-07-19T19:18:25.110957'
+last_update_check: null
+log_level: INFO
+log_to_file: true
+max_concurrent_requests: 5
+max_log_files: 30
+timeout: 30
+user_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+version: 1.0.0
+web_host: 0.0.0.0
+web_port: 2121

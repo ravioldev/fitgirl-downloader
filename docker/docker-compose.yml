@@ -1,0 +1,43 @@
+services:
+  fitgirl-updater:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fitgirl-updater-app
+    ports:
+      - "2121:2121"
+    volumes:
+      # Mount configuration and data files to persist data
+      - ./config.yaml:/app/config.yaml
+      - ./fitgirl_releases.json:/app/fitgirl_releases.json
+      - ./logs:/app/logs
+      # Optional: Mount static files for development
+      # - ./static:/app/static
+      # - ./templates:/app/templates
+    environment:
+      # Flask environment variables
+      - FLASK_ENV=production
+      - FLASK_DEBUG=false
+      # Chrome/Selenium environment variables
+      - DISPLAY=:99
+      - CHROME_ARGS=--no-sandbox --disable-dev-shm-usage --disable-gpu --headless
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2121/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    # Add resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+networks:
+  default:
+    name: fitgirl-updater-network 

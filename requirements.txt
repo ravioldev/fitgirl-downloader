@@ -1,0 +1,29 @@
+# Web framework
+flask==3.0.0
+flask-socketio==5.3.6
+
+# Web scraping and requests
+requests==2.31.0
+beautifulsoup4==4.12.2
+lxml==4.9.3
+selenium==4.15.2
+cloudscraper==1.2.71
+
+# Data processing
+pandas==2.1.3
+feedparser==6.0.10
+
+# Images and multimedia
+Pillow==10.1.0
+
+# Utilities
+python-dateutil==2.8.2
+urllib3==2.1.0
+certifi==2023.11.17
+
+# Logging and configuration
+pyyaml==6.0.1
+colorama==0.4.6
+
+# Operating system
+psutil==5.9.6 
