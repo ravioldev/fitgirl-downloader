@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Startup script for FitGirl Updater Web
+Startup script for FitGirl Downloader Web
 """
 
 import sys
@@ -11,7 +11,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 if __name__ == '__main__':
-    print("🚀 Starting FitGirl Updater Web...")
+    print("🚀 Starting FitGirl Downloader Web...")
     print("⏹️  Press Ctrl+C to stop the server")
     print()
     
