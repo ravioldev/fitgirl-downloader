@@ -1,0 +1,55 @@
+FITGIRL UPDATER - DOCKER SETUP INSTRUCTIONS
+===============================================
+
+FILES CREATED:
+- Dockerfile: Container configuration with Chrome/Selenium support
+- docker-compose.yml: Service orchestration configuration
+- entrypoint.sh: Container startup script
+- .dockerignore: Files to exclude from Docker build
+- docker-scripts.sh: Management script for Linux/Mac
+- docker-scripts.ps1: Management script for Windows PowerShell
+
+QUICK START:
+1. Build the image:
+   docker-compose build
+
+2. Start the container:
+   docker-compose up -d
+
+3. Access the application:
+   Open http://localhost:2121 in your browser
+
+4. Stop the container:
+   docker-compose down
+
+USING THE MANAGEMENT SCRIPTS:
+
+Windows PowerShell:
+- .\docker-scripts.ps1 build
+- .\docker-scripts.ps1 start
+- .\docker-scripts.ps1 stop
+- .\docker-scripts.ps1 logs
+- .\docker-scripts.ps1 status
+
+Linux/Mac:
+- ./docker-scripts.sh build
+- ./docker-scripts.sh start
+- ./docker-scripts.sh stop
+- ./docker-scripts.sh logs
+- ./docker-scripts.sh status
+
+PERSISTENT DATA:
+The following files/folders are mounted as volumes to persist data:
+- config.yaml: Application configuration
+- fitgirl_releases.json: Database file
+- logs/: Log files directory
+
+TROUBLESHOOTING:
+- If Selenium fails, the container includes Chrome and ChromeDriver
+- Check logs with: docker-compose logs fitgirl-updater
+- Resource limits are set to 1GB RAM and 1 CPU core
+- Container runs as non-root user for security
+
+DEVELOPMENT:
+- Uncomment volume mounts in docker-compose.yml for live editing
+- Use 'rebuild' command to rebuild and restart after code changes 

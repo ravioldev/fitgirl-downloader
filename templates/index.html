@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitGirl Downloader - Release Manager</title>
+    
+    <!-- Meta tags -->
+    <meta name="description" content="FitGirl Downloader - Manage and track FitGirl Repacks releases">
+    <meta name="keywords" content="FitGirl, Repacks, Games, Download Manager">
+    <meta name="author" content="FitGirl Downloader">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIj4KICA8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIGZpbGw9IiM2NjdlZWEiLz4KICA8dGV4dCB4PSIxNiIgeT0iMjIiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiPkY8L3RleHQ+Cjwvc3ZnPgo=">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <h1>FitGirl Downloader</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="syncBtn" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i>
+                        Sync
+                    </button>
+                    <div class="dropdown-menu">
+                        <button id="menuBtn" class="btn btn-menu">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div id="dropdownContent" class="dropdown-content">
+                            <button id="statsBtn" class="dropdown-item">
+                                <i class="fas fa-chart-bar"></i>
+                                Show/Hide Statistics
+                            </button>
+                            <button id="clearDatabaseBtn" class="dropdown-item dropdown-item-danger">
+                                <i class="fas fa-trash-alt"></i>
+                                Clear Database
+                            </button>
+                            <a href="https://github.com/ravioldev/fitgirl-downloader/releases" target="_blank" class="dropdown-item">
+                                <i class="fab fa-github"></i>
+                                Search for Updates
+                            </a>
+                            <a href="https://fitgirl-repacks.site" target="_blank" class="dropdown-item">
+                                <i class="fas fa-external-link-alt"></i>
+                                FitGirl Website
+                            </a>
+                            <div class="dropdown-version">
+                                <span id="appVersion">v1.0.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sync Progress Section -->
+    <section id="syncProgressSection" class="sync-progress-section" style="display: none;">
+        <div class="container">
+            <div class="sync-progress-card">
+                <div class="sync-progress-header">
+                    <i class="fas fa-sync-alt fa-spin"></i>
+                    <h3>Syncing Releases</h3>
+                </div>
+                <div class="sync-progress-content">
+                    <div class="progress-bar">
+                        <div id="syncProgressBar" class="progress-fill"></div>
+                    </div>
+                    <div class="progress-info">
+                        <p id="syncMessage">Starting synchronization...</p>
+                        <div class="progress-stats">
+                            <span id="syncCurrent">0</span> / <span id="syncTotal">0</span>
+                            <span id="syncLabel">pages</span>
+                        </div>
+                    </div>
+                    <div class="sync-details">
+                        <div class="sync-stat">
+                            <i class="fas fa-plus"></i>
+                            <span>New: <span id="syncNewCount">0</span></span>
+                        </div>
+                        <div class="sync-stat">
+                            <i class="fas fa-edit"></i>
+                            <span>Updated: <span id="syncUpdatedCount">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Statistics Dashboard -->
+            <section id="statsSection" class="stats-section" style="display: none;">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalReleases">0</h3>
+                            <p>Total Releases</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="newReleases">0</h3>
+                            <p>New</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="downloadedReleases">0</h3>
+                            <p>Downloaded</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="ignoredReleases">0</h3>
+                            <p>Ignored</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="last-sync">
+                    <p><i class="fas fa-clock"></i> Last sync: <span id="lastSync">Never</span></p>
+                </div>
+            </section>
+
+            <!-- Search and Filters -->
+            <section class="search-section">
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search releases...">
+                        <button id="clearBtn" class="btn btn-secondary" title="Clear search" style="display: flex;">
+                            <i class="fas fa-times"></i>
+                            Clear
+                        </button>
+                    </div>
+                    <div class="filters">
+                        <div class="filter-container">
+                            <i class="fas fa-tag filter-icon"></i>
+                            <select id="statusFilter" class="filter-select">
+                                <option value="">All statuses</option>
+                                <option value="NEW">New</option>
+                                <option value="DOWNLOADED">Downloaded</option>
+                                <option value="IGNORED">Ignored</option>
+                            </select>
+                        </div>
+                        <div class="filter-container">
+                            <i class="fas fa-sort filter-icon"></i>
+                            <select id="sortFilter" class="filter-select">
+                                <option value="date_desc">Date (newest)</option>
+                                <option value="date_asc">Date (oldest)</option>
+                                <option value="title_asc">Title (A-Z)</option>
+                                <option value="title_desc">Title (Z-A)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                <div class="spinner"></div>
+                <p>Loading releases...</p>
+            </div>
+
+        </div>
+        
+        <!-- Releases Grid - Full Width Section -->
+        <section class="releases-section-fullwidth">
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>No releases found</h3>
+                <p>Try different search terms or filters</p>
+            </div>
+            
+            <div id="releasesGrid" class="releases-grid">
+                <!-- Releases will be loaded here -->
+            </div>
+            
+            <!-- Load More Button - Centered Container -->
+            <div class="container">
+                <div class="load-more-container">
+                    <button id="loadMoreBtn" class="btn btn-secondary" style="display: none;">
+                        <i class="fas fa-plus"></i>
+                        Load more
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Release Detail Modal -->
+    <div id="releaseModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Game Title</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="release-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Publish Date:</span>
+                        <span id="modalPublishDate">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Game Date:</span>
+                        <span id="modalGameDate">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Size:</span>
+                        <span id="modalSize">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status:</span>
+                        <span id="modalStatus">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Description:</span>
+                        <p id="modalDescription">-</p>
+                    </div>
+                </div>
+                <div class="release-actions">
+                    <button id="modalMagnetBtn" class="btn btn-primary">
+                        <i class="fas fa-magnet"></i>
+                        Magnet Link
+                    </button>
+                    <button id="modalTorrentBtn" class="btn btn-secondary">
+                        <i class="fas fa-download"></i>
+                        Torrent File
+                    </button>
+                    <select id="modalStatusSelect" class="status-select">
+                        <option value="NEW">New</option>
+                        <option value="DOWNLOADED">Downloaded</option>
+                        <option value="IGNORED">Ignored</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast" style="display: none;">
+        <i id="toastIcon" class="fas fa-info-circle"></i>
+        <span id="toastMessage">Notification message</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 
